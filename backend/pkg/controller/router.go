@@ -9,12 +9,16 @@ import (
 
 func SetUpRouter() *gin.Engine {
 	helloController := HelloController{}
+	todoController := TodoController{}
 
 	r := gin.Default()
 	r.Use(cors.Default())
 	r.GET("/healthz", healthz)
 
 	r.GET("/hello", helloController.SayHello)
+	todoGroup := r.Group("/todos")
+	todoGroup.GET("/", todoController.GetTodoList)
+	todoGroup.POST("/add", todoController.InsertTodo)
 	return r
 }
 
