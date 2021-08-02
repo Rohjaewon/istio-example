@@ -29,3 +29,14 @@ func (TodoController) InsertTodo(c *gin.Context) {
 	statusCode, result := todoService.InsertTodo(dbctl, newTodo)
 	c.JSON(statusCode, result)
 }
+
+func (TodoController) UpdateTodo(c *gin.Context) {
+	var updateTodo db.Todo
+	if err := c.ShouldBindJSON(&updateTodo); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+	dbctl.SetClient()
+	statusCode, result := todoService.UpdateTodo(dbctl, updateTodo)
+	c.JSON(statusCode, result)
+}

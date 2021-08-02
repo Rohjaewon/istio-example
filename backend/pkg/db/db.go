@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -21,10 +22,11 @@ const dbName = "todo_app"
 const collection = "todo"
 
 type Todo struct {
-	Description string `dson:"description" json:"description"`
-	Responsible string `dson:"responsible" json:"responsible"`
-	Priority    string `dson:"priority" json:"priority"`
-	Completed   bool   `dson:"completed" json:"completed"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Description string             `bson:"description" json:"description"`
+	Responsible string             `bson:"responsible" json:"responsible"`
+	Priority    string             `bson:"priority" json:"priority"`
+	Completed   bool               `bson:"completed" json:"completed"`
 }
 
 func (dc *DBController) SetClient() error {
@@ -48,7 +50,7 @@ func (dc *DBController) SetClient() error {
 }
 
 func (dc *DBController) GetTodoList() ([]Todo, error) {
-	todoClient := dc.client.Database(dbName).Collection(collection)
+	todoClient := dc.getTodoCollection(dbName, collection)
 	cursor, err := todoClient.Find(context.TODO(), bson.D{})
 	if err != nil {
 		log.Println(err)
@@ -62,10 +64,24 @@ func (dc *DBController) GetTodoList() ([]Todo, error) {
 }
 
 func (dc *DBController) InsertTodo(todo Todo) error {
-	todoClient := dc.client.Database(dbName).Collection(collection)
+	todoClient := dc.getTodoCollection(dbName, collection)
 	_, err := todoClient.InsertOne(context.TODO(), todo)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (dc *DBController) UpdateTodo(todo Todo) error {
+	todoClient := dc.getTodoCollection(dbName, collection)
+	filter := bson.M{"_id": todo.ID}
+	updateTodo := bson.M{
+		"$set": todo,
+	}
+	_, err := todoClient.UpdateOne(context.TODO(), filter, updateTodo)
+	return err
+}
+
+func (dc *DBController) getTodoCollection(db string, colName string) *mongo.Collection {
+	return dc.client.Database(db).Collection(colName)
 }

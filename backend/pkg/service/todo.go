@@ -25,3 +25,11 @@ func (TodoService) InsertTodo(dbctl db.DBController, newTodo db.Todo) (int, inte
 	}
 	return http.StatusNoContent, nil
 }
+
+func (TodoService) UpdateTodo(dbctl db.DBController, updateTodo db.Todo) (int, interface{}) {
+	err := dbctl.UpdateTodo(updateTodo)
+	if err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
+	return http.StatusOK, nil
+}
