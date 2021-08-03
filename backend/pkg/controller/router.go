@@ -19,7 +19,9 @@ func SetUpRouter() *gin.Engine {
 	todoGroup := r.Group("/todos")
 	todoGroup.GET("/", todoController.GetTodoList)
 	todoGroup.POST("/add", todoController.InsertTodo)
-	todoGroup.POST("/update", todoController.UpdateTodo)
+	todoGroup.POST("/edit/:id", todoController.UpdateTodo)
+	todoGroup.GET("/:id", todoController.GetTodo)
+
 	return r
 }
 

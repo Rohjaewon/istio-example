@@ -5,10 +5,10 @@ const uri = 'http://localhost:4000'
 
 function EditTodo(props) {
     const [todo, setTodo] = useState({
-        'todo_description': '',
-        'todo_responsible': '',
-        'todo_priority': '',
-        'todo_completed': false
+        'description': '',
+        'responsible': '',
+        'priority': '',
+        'completed': false
     })
     //componentDidMount
     useEffect(() => {
@@ -16,10 +16,10 @@ function EditTodo(props) {
         axios.get(server.join('/'))
             .then(res => {
                 setTodo({
-                    todo_description: res.data.todo_description,
-                    todo_responsible: res.data.todo_responsible,
-                    todo_priority: res.data.todo_priority,
-                    todo_completed: res.data.todo_completed
+                    description: res.data.description,
+                    responsible: res.data.responsible,
+                    priority: res.data.priority,
+                    completed: res.data.completed
                 })
             })
             .catch(err => console.log(err));
@@ -28,39 +28,39 @@ function EditTodo(props) {
     const onChangeTodoDescription = (e) => {
         setTodo({
             ...todo,
-            todo_description: e.target.value
+            description: e.target.value
         });
     }
 
     const onChangeTodoResponsible = (e) => {
         setTodo({
             ...todo,
-            todo_responsible: e.target.value
+            responsible: e.target.value
         });
     }
 
     const onChangeTodoPriority = (e) => {
         setTodo({
             ...todo,
-            todo_priority: e.target.value
+            priority: e.target.value
         });
     }
 
     const onChangeTodoCompleted = (e) => {
         setTodo({
             ...todo,
-            todo_completed: !todo.todo_completed
+            completed: !todo.completed
         });
     }
 
     const onSubmit = (e) => {
         e.preventDefault();
-        let server = [uri, 'todos/update', props.match.params.id]
+        let server = [uri, 'todos/edit', props.match.params.id]
         const obj = {
-            todo_description: todo.todo_description,
-            todo_responsible: todo.todo_responsible,
-            todo_priority: todo.todo_priority,
-            todo_completed: todo.todo_completed
+            description: todo.description,
+            responsible: todo.responsible,
+            priority: todo.priority,
+            completed: todo.completed
         };
         axios.post(server.join('/'), obj)
             .then(res => console.log(res.data));
@@ -76,7 +76,7 @@ function EditTodo(props) {
                     <label>Description: </label>
                     <input type="text"
                         className="form-control"
-                        value={todo.todo_description}
+                        value={todo.description}
                         onChange={onChangeTodoDescription}
                     />
                 </div>
@@ -84,7 +84,7 @@ function EditTodo(props) {
                     <label>Responsible: </label>
                     <input type="text"
                         className="form-control"
-                        value={todo.todo_responsible}
+                        value={todo.responsible}
                         onChange={onChangeTodoResponsible}
                     />
                 </div>
@@ -95,7 +95,7 @@ function EditTodo(props) {
                             name="priorityOptions"
                             id="priorityLow"
                             value="Low"
-                            checked={todo.todo_priority === "Low"}
+                            checked={todo.priority === "Low"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">Low</label>
@@ -106,7 +106,7 @@ function EditTodo(props) {
                             name="priorityOptions"
                             id="priorityMedium"
                             value="Medium"
-                            checked={todo.todo_priority === "Medium"}
+                            checked={todo.priority === "Medium"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">Medium</label>
@@ -117,7 +117,7 @@ function EditTodo(props) {
                             name="priorityOptions"
                             id="priorityHigh"
                             value="High"
-                            checked={todo.todo_priority === "High"}
+                            checked={todo.priority === "High"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">High</label>
@@ -129,8 +129,8 @@ function EditTodo(props) {
                         id="completedCheckbox"
                         name="completedCheckbox"
                         onChange={onChangeTodoCompleted}
-                        checked={todo.todo_completed}
-                        value={todo.todo_completed}
+                        checked={todo.completed}
+                        value={todo.completed}
                     />
                     <label className="form-check-label" htmlFor="completedCheckbox">
                         Completed

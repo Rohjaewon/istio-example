@@ -19,6 +19,12 @@ func (TodoController) GetTodoList(c *gin.Context) {
 	c.JSON(statusCode, result)
 }
 
+func (TodoController) GetTodo(c *gin.Context) {
+	dbctl.SetClient()
+	statusCode, result := todoService.GetTodo(dbctl, c.Param("id"))
+	c.JSON(statusCode, result)
+}
+
 func (TodoController) InsertTodo(c *gin.Context) {
 	var newTodo db.Todo
 	if err := c.ShouldBindJSON(&newTodo); err != nil {
@@ -37,6 +43,6 @@ func (TodoController) UpdateTodo(c *gin.Context) {
 		return
 	}
 	dbctl.SetClient()
-	statusCode, result := todoService.UpdateTodo(dbctl, updateTodo)
+	statusCode, result := todoService.UpdateTodo(dbctl, updateTodo, c.Param("id"))
 	c.JSON(statusCode, result)
 }

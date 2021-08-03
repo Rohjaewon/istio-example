@@ -63,6 +63,23 @@ func (dc *DBController) GetTodoList() ([]Todo, error) {
 	return result, nil
 }
 
+func (dc DBController) GetTodo(id string) (Todo, error) {
+	var todo Todo
+	todoClient := dc.getTodoCollection(dbName, collection)
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return Todo{}, err
+	}
+	filter := bson.M{
+		"_id": objID,
+	}
+	err = todoClient.FindOne(context.TODO(), filter).Decode(&todo)
+	if err != nil {
+		return Todo{}, err
+	}
+	return todo, nil
+}
+
 func (dc *DBController) InsertTodo(todo Todo) error {
 	todoClient := dc.getTodoCollection(dbName, collection)
 	_, err := todoClient.InsertOne(context.TODO(), todo)
