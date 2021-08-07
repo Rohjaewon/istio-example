@@ -1,33 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import * as config from '../config'
 
 
 const Todo = props => (
     <tr>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_description}</td>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_responsible}</td>
-        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_priority}</td>
+        <td className={props.todo.completed ? 'completed' : ''}>{props.todo.description}</td>
+        <td className={props.todo.completed ? 'completed' : ''}>{props.todo.responsible}</td>
+        <td className={props.todo.completed ? 'completed' : ''}>{props.todo.priority}</td>
         <td>
-            <Link to={"/edit/" + props.todo._id}>Edit</Link>
+            <Link to={"/edit/" + props.todo.id}>Edit</Link>
         </td>
     </tr>
 )
 
-const uri = 'http://localhost:4000'
+const uri = `${config.ENDPOINT}:${config.PORT}`
 
 function TodosList() {
     const [todos, setTodos] = useState([])
 
     //componentDidMount and componentDidUpdate
     useEffect(() => {
-        const server = [uri, 'todos']
+        const server = [uri, 'todos', '']
         axios.get(server.join("/"))
         .then(res => {
-            setTodos(res.data)
+            if (res.data == null) {
+                setTodos([])
+            } else {
+                setTodos(res.data)
+            }
         })
         .catch(err => console.log(err));
-    })
+    }, [])
 
     const todoList = () => todos.map(
         (todo, index) => <Todo todo={todo} key={index} />

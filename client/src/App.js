@@ -17,15 +17,12 @@ function App() {
           <a className="navbar-brand" href="">
             <img src = {logo} width="30" height="30" alt="logo" />
           </a>
-          <Link to="/" className="navbar-brand">MERN-Stack Todo App</Link> 
+          <Link to="/" className="navbar-brand">Todo</Link> 
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="navbar-nav mr-auto">
-              <li className="navbar-item">
-                <Link to="/" className="nav-link">Todos</Link>
-              </li>
               <li className="navbar-item">
                 <Link to="/create" className="nav-link">Create Todo</Link>
               </li>

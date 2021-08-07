@@ -10,7 +10,7 @@ import (
 func main() {
 	port, isExists := os.LookupEnv("PORT")
 	if !isExists {
-		port = "8080"
+		port = "4000"
 	}
 	r := controller.SetUpRouter()
 	r.Run(fmt.Sprintf(":%s", port))

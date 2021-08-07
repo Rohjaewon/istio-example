@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import * as config from '../config'
 
-const uri = 'http://localhost:4000'
+const uri = `${config.ENDPOINT}:${config.PORT}`
 
 function CreateTodo(props) {
     const [todo, setTodo] = useState({
-        'todo_description': '',
-        'todo_responsible': '',
-        'todo_priority': '',
-        'todo_completed': false,
+        'description': '',
+        'responsible': '',
+        'priority': '',
+        'completed': false,
     })
 
     const onChangeTodoDescription = e => {
-        setTodo({ ...todo, todo_description: e.target.value });
+        setTodo({ ...todo, description: e.target.value });
     }
 
     const onChangeTodoResponsible = e => {
-        setTodo({ ...todo, todo_responsible: e.target.value });
+        setTodo({ ...todo, responsible: e.target.value });
     }
 
     const onChangeTodoPriority = e => {
-        setTodo({ ...todo, todo_priority: e.target.value });
+        setTodo({ ...todo, priority: e.target.value });
     }
 
     const onSubmit = e => {
@@ -28,21 +29,20 @@ function CreateTodo(props) {
 
         // SUBMIT LOGIC NEED TO BE IMPLEMENTED HERE
         console.log('Form submitteed:');
-        console.log(`Todo Description: ${todo.todo_description}`);
-        console.log(`Todo Responsible: ${todo.todo_responsible}`);
-        console.log(`Todo Priority: ${todo.todo_priority}`);
-        console.log(`Todo Completed: ${todo.todo_completed}`);
+        console.log(`Todo Description: ${todo.description}`);
+        console.log(`Todo Responsible: ${todo.responsible}`);
+        console.log(`Todo Priority: ${todo.priority}`);
+        console.log(`Todo Completed: ${todo.completed}`);
 
         const newTodo = {
-            todo_description: todo.todo_description,
-            todo_responsible: todo.todo_responsible,
-            todo_priority: todo.todo_priority,
-            todo_completed: todo.todo_completed
+            description: todo.description,
+            responsible: todo.responsible,
+            priority: todo.priority,
+            completed: todo.completed
         }
         const server = [uri, 'todos/add']
         axios.post(server.join('/'), newTodo)
             .then(res => {
-                console.log(res.data)
                 props.history.push('/')
             })
             .then(() => {
@@ -55,10 +55,10 @@ function CreateTodo(props) {
 
     useEffect(() => {
         setTodo({
-            'todo_description': '',
-            'todo_responsible': '',
-            'todo_priority': '',
-            'todo_completed': false,
+            'description': '',
+            'responsible': '',
+            'priority': '',
+            'completed': false,
         })
     }, [])
 
@@ -70,7 +70,7 @@ function CreateTodo(props) {
                     <label>Description: </label>
                     <input type="text"
                         className="form-control"
-                        value={todo.todo_description}
+                        value={todo.description}
                         onChange={onChangeTodoDescription}
                     />
 
@@ -79,7 +79,7 @@ function CreateTodo(props) {
                     <label>Responsible: </label>
                     <input type="text"
                         className="form-control"
-                        value={todo.todo_responsible}
+                        value={todo.responsible}
                         onChange={onChangeTodoResponsible}
                     />
 
@@ -91,7 +91,7 @@ function CreateTodo(props) {
                             name="priorityOptions"
                             id="priorityLow"
                             value="Low"
-                            checked={todo.todo_priority === "Low"}
+                            checked={todo.priority === "Low"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">Low</label>
@@ -102,7 +102,7 @@ function CreateTodo(props) {
                             name="priorityOptions"
                             id="priorityMedium"
                             value="Medium"
-                            checked={todo.todo_priority === "Medium"}
+                            checked={todo.priority === "Medium"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">Medium</label>
@@ -113,7 +113,7 @@ function CreateTodo(props) {
                             name="priorityOptions"
                             id="priorityHigh"
                             value="High"
-                            checked={todo.todo_priority === "High"}
+                            checked={todo.priority === "High"}
                             onChange={onChangeTodoPriority}
                         />
                         <label className="form-check-label">High</label>

@@ -1,39 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-backend-v1
+  name: mongo
   labels:
-    app: todo-backend-v1
+    app: mongo
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-backend-v1
+      app: mongo
       version: v1
   template:
     metadata:
       labels:
-        app: todo-backend-v1
+        app: mongo
         version: v1
     spec:
       containers:
-      - name: nucknuck/todo-backend-v1
-        image: todo-backend:v1
+      - name: mongo
+        image: mongo:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 4000 
+        - containerPort: 27017
           name: http
+        volumeMounts:
+          - mountPath: /data/db
+            name: data-volume
         resources: {}
+      volumes:
+        - name: data-volume
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-backend-v1
+  name: mongo
 spec:
   selector:
-    app: todo-backend-v1
+    app: mongo
   ports:
     - protocol: TCP
-      port: 4000
-      targetPort: 4000
+      port: 27017
+      targetPort: 27017
