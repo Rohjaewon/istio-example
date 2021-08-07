@@ -18,7 +18,7 @@ spec:
         version: v1
     spec:
       containers:
-      - name: todo-backend-v1
+      - name: nucknuck/todo-backend-v1
         image: todo-backend:v1
         imagePullPolicy: Always
         ports:
