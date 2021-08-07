@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import * as config from '../config'
 
 
 const Todo = props => (
@@ -14,7 +15,7 @@ const Todo = props => (
     </tr>
 )
 
-const uri = 'http://localhost:4000'
+const uri = `${config.ENDPOINT}:${config.PORT}`
 
 function TodosList() {
     const [todos, setTodos] = useState([])

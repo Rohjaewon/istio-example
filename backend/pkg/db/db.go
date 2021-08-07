@@ -16,7 +16,7 @@ type DBController struct {
 	client *mongo.Client
 }
 
-const dbURL = "mongodb://127.0.0.1"
+const dbURL = "mongodb://mongo"
 const dbPORT = "27017"
 const dbName = "todo_app"
 const collection = "todo"
@@ -92,6 +92,7 @@ func (dc *DBController) InsertTodo(todo Todo) error {
 func (dc *DBController) UpdateTodo(todo Todo) error {
 	todoClient := dc.getTodoCollection(dbName, collection)
 	filter := bson.M{"_id": todo.ID}
+	log.Println(todo)
 	updateTodo := bson.M{
 		"$set": todo,
 	}

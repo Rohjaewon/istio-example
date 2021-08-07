@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import * as config from '../config'
 
-const uri = 'http://localhost:4000'
+const uri = `${config.ENDPOINT}:${config.PORT}`
 
 function CreateTodo(props) {
     const [todo, setTodo] = useState({
